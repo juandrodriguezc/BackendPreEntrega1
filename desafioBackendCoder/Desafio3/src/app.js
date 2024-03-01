@@ -1,46 +1,46 @@
-//Desafio 3 Coderhouse Backend
-
 const express = require('express');
-const productos = require('./productos');
+const ProductManager = require('./productManager');
 
 const PORT = 3000;
 const app = express();
+
+// Crear una instancia de ProductManager
+const productsFile='productos.json';
+const manager = new ProductManager(productsFile);
 
 app.get('/', (req, res) => {
     res.send('Servidor con Express');
 });
 
 app.get('/productos', (req, res) => {
-    
-    let{limit,skip}=req.query
+    const { limit, skip } = req.query;
 
-    let resultado=productos
-    if(skip && skip>0){
-        resultado=resultado.slice(skip)
+    let resultado = manager.getProduct(); // Obtener todos los productos usando la instancia 'manager'
+
+    if (skip && skip > 0) {
+        resultado = resultado.slice(skip); // OJO: Solo usar skip debería ser verificado.
     }
-        if(limit && limit>0){
-            resultado=resultado.slice(0, limit)
+
+    if (limit && limit > 0) {
+        resultado = resultado.slice(0, limit);
     }
-    
 
     res.json(resultado);
 });
 
 app.get('/productos/:id', (req, res) => {
     const productId = parseInt(req.params.id);
-    
-    
-    const producto = productos.find(producto => producto.id === productId);
-    
+    const producto = manager.getProductById(productId); // Obtener producto por su ID usando la instancia 'manager'
+
     if (producto) {
-        res.json(producto); 
+        res.json(producto);
     } else {
-        res.send('Error 404. Producto no encontrado');
+        res.status(404).send('Error 404. Producto no encontrado');
     }
 });
 
 app.get('*', (req, res) => {
-    res.send('Error. 404 Not Found');
+    res.status(404).send('Error. 404 Not Found');
 });
 
 app.listen(PORT, () => {
