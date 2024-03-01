@@ -51,11 +51,11 @@
     updateProduct(id, NuevaInfo) {
         const index = this.products.findIndex(product => product.id === id);
         if (index !== -1) {
-            // Crear una copia del producto actual y fusionarla con los nuevos datos
+            
             const updatedProduct = { ...this.products[index], ...NuevaInfo };
-            // Para no sobreescribir el ID
+            
             updatedProduct.id = id;
-            // Actualizar el producto en el array de productos
+            
             this.products[index] = updatedProduct;
             console.log("Producto actualizado correctamente");
             return true;

@@ -4,7 +4,7 @@ const ProductManager = require('./productManager');
 const PORT = 3000;
 const app = express();
 
-// Crear una instancia de ProductManager
+
 const productsFile='productos.json';
 const manager = new ProductManager(productsFile);
 
@@ -15,10 +15,10 @@ app.get('/', (req, res) => {
 app.get('/productos', (req, res) => {
     const { limit, skip } = req.query;
 
-    let resultado = manager.getProduct(); // Obtener todos los productos usando la instancia 'manager'
+    let resultado = manager.getProduct(); 
 
     if (skip && skip > 0) {
-        resultado = resultado.slice(skip); // OJO: Solo usar skip debería ser verificado.
+        resultado = resultado.slice(skip); 
     }
 
     if (limit && limit > 0) {
@@ -30,8 +30,7 @@ app.get('/productos', (req, res) => {
 
 app.get('/productos/:id', (req, res) => {
     const productId = parseInt(req.params.id);
-    const producto = manager.getProductById(productId); // Obtener producto por su ID usando la instancia 'manager'
-
+    const producto = manager.getProductById(productId);
     if (producto) {
         res.json(producto);
     } else {
